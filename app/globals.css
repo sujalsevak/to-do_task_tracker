@@ -1,0 +1,143 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Define some custom CSS variables for easier theming */
+  --color-primary: 99, 102, 241; /* Violet-500 equivalent */
+  --color-secondary: 236, 72, 153; /* Pink-500 equivalent */
+  --color-accent: 59, 130, 246; /* Blue-500 equivalent */
+}
+
+body {
+  /* Use a background image with linear gradient overlay */
+  background:
+    linear-gradient(135deg, rgba(var(--color-primary), 0.1), rgba(var(--color-secondary), 0.1)), /* Subtle overlay */
+    radial-gradient(at 0% 0%, hsl(240, 6%, 10%), hsl(240, 6%, 5%)) fixed; /* Dark radial gradient base */
+  background-size: 100% 100%; /* Cover the entire body */
+  background-attachment: fixed; /* Ensures gradient is fixed when scrolling */
+  min-height: 100vh; /* Ensure it covers full viewport height */
+  overflow: hidden; /* Prevent body scrollbar from animated background if applicable */
+}
+
+
+/* --- Optional: Badass Animated Background (CSS-only particles/dots) --- */
+/* This creates a subtle, shifting starry/dot background */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1; /* Behind content */
+  background-image:
+    radial-gradient(circle, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    radial-gradient(circle, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 50px 50px; /* Adjust spacing of dots */
+  background-position: 0 0, 25px 25px; /* Offset for grid pattern */
+  animation: moveBackground 60s linear infinite; /* Slow, continuous movement */
+  opacity: 0.2; /* Subtle visibility */
+  pointer-events: none; /* Ensure it doesn't interfere with clicks */
+}
+
+@keyframes moveBackground {
+  from {
+    background-position: 0 0, 25px 25px;
+  }
+  to {
+    background-position: 500px 500px, 525px 525px; /* Larger values for continuous movement */
+  }
+}
+
+@keyframes animate-gradient-xy {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-gradient-xy {
+  background-size: 400% 400%;
+  animation: animate-gradient-xy 15s ease infinite;
+}
+
+/* In your global CSS file (e.g., globals.css) */
+
+/* Existing background gradient animation (from Board.tsx) */
+@keyframes animate-gradient-xy {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-gradient-xy {
+  background-size: 400% 400%;
+  animation: animate-gradient-xy 15s ease infinite;
+}
+
+/* Reintroducing the container glow (rectangle animation) */
+@keyframes pulse-chart-glow {
+  0% {
+    box-shadow: 0 0 5px rgba(102, 231, 183, 0.4), 0 0 10px rgba(102, 231, 183, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 15px rgba(102, 231, 183, 0.8), 0 0 30px rgba(102, 231, 183, 0.4);
+  }
+  100% {
+    box-shadow: 0 0 5px rgba(102, 231, 183, 0.4), 0 0 10px rgba(102, 231, 183, 0.2);
+  }
+}
+
+.chart-glow-animation {
+  animation: pulse-chart-glow 2s infinite alternate;
+}
+
+/* NEW: Pie circle border animation with different, vibrant colors */
+@keyframes pie-circle-border-glow {
+  0% {
+    stroke: rgba(173, 216, 230, 0.5); /* Light blue */
+    stroke-width: 2px;
+  }
+  50% {
+    stroke: rgba(255, 105, 180, 0.8); /* Hot pink */
+    stroke-width: 4px;
+  }
+  100% {
+    stroke: rgba(173, 216, 230, 0.5); /* Light blue */
+    stroke-width: 2px;
+  }
+}
+
+.animate-pie-circle-border {
+  animation: pie-circle-border-glow 2.5s infinite alternate; /* Slightly different duration */
+}
+
+/* --- Optional: More dynamic subtle animation (e.g., glowing corners/edges) --- */
+/* This creates a subtle pulsating glow at certain corners */
+/* You'd add separate divs in layout.tsx for this, not directly on body */
+/* For example:
+   <div className="absolute top-0 left-0 w-64 h-64 bg-violet-500/20 blur-3xl animate-pulse-slow"></div>
+   <div className="absolute bottom-0 right-0 w-64 h-64 bg-pink-500/20 blur-3xl animate-pulse-slow delay-1000"></div>
+*/
+/* @keyframes pulse-slow {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(1.05); }
+}
+.animate-pulse-slow {
+  animation: pulse-slow 10s infinite alternate;
+} */
+
+/* You can also use a library for more complex particle effects like particles.js or react-tsparticles */
+/* But for "badass" with minimal setup, a CSS background is good */
