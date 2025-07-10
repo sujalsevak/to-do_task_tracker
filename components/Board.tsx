@@ -58,12 +58,12 @@ const Board = () => {
 
   // Define a mapping for column heading colors using hex codes, ensuring all TColumn members are covered
   const COLUMN_COLORS: { [key in TColumn]: string } = {
-    backlog: '#FF6347',      // Tomato Red
-    todo: '#FFD700',         // Gold Yellow
-    doing: '#1E90FF',        // Dodger Blue
-    active: '#8A2BE2',       // Blue Violet
-    'in-progress': '#FFA500', // Orange
-    done: '#32CD32',         // Lime Green
+    backlog: '#FF6347',        // Tomato Red
+    todo: '#FFD700',           // Gold Yellow
+    doing: '#1E90FF',          // Dodger Blue
+    active: '#8A2BE2',         // Blue Violet
+    'in-progress': '#FFA500',  // Orange
+    done: '#32CD32',           // Lime Green
   };
 
   return (
@@ -83,7 +83,14 @@ const Board = () => {
         </button>
       </div>
 
-      <div className="flex flex-col md:flex-row gap-6">
+      {/* START CHANGES HERE */}
+      {/* Container for columns:
+          - flex-col on mobile, flex-row on medium screens and up.
+          - overflow-x-auto enables horizontal scrolling if columns don't fit.
+          - p-2 pb-4 adds padding to ensure scrollbar doesn't hide content.
+          - min-h-0 is important to prevent flex items from squishing excessively in a vertical layout.
+      */}
+      <div className="flex flex-col md:flex-row gap-6 w-full min-h-0 overflow-x-auto p-2 pb-4">
         {columns.map((col) => (
           <Column
             key={col}
@@ -92,9 +99,13 @@ const Board = () => {
             cards={cards}
             setCards={setCards}
             headingColor={COLUMN_COLORS[col]}
+            // Pass className to Column to control its width and prevent shrinking in flex row
+            className="flex-shrink-0 w-80 md:w-[280px]" // Use w-80 (320px) on mobile, w-[280px] on medium+
           />
         ))}
       </div>
+      {/* END CHANGES HERE */}
+
       {/* Add your ColumnDistributionChart here, passing necessary data */}
       <div className="mt-12">
         <ColumnDistributionChart cards={cards} columns={columns} />
@@ -105,4 +116,4 @@ const Board = () => {
   );
 };
 
-export default Board; // FIX: Exporting Board as default
+export default Board;

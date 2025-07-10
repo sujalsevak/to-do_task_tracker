@@ -1,3 +1,5 @@
+// components/Column.tsx
+
 import { Card } from "./Card";
 import { AddCard } from "./AddCard";
 import { useState } from "react";
@@ -5,7 +7,12 @@ import { TCard, TColumnProps, TColumn } from "@/types"; // Ensure TColumn is imp
 import { DropIndicator } from "./DropIndicator";
 import { motion, AnimatePresence } from "framer-motion";
 
-export const Column = ({ title, headingColor, cards, column, setCards }: TColumnProps) => {
+// Extend TColumnProps to accept a className prop from the parent (Board.tsx)
+interface ExtendedColumnProps extends TColumnProps {
+    className?: string; // Add this line
+}
+
+export const Column = ({ title, headingColor, cards, column, setCards, className }: ExtendedColumnProps) => { // Destructure className
   const [active, setActive] = useState(false);
   const [draggingCard, setDraggingCard] = useState<TCard | null>(null);
 
@@ -100,16 +107,21 @@ export const Column = ({ title, headingColor, cards, column, setCards }: TColumn
   };
 
   return (
-    <div className="flex-1 mb-2.5 lg:mb-0">
+    // START CHANGES HERE
+    // Apply the `className` prop received from Board.tsx here
+    // This `className` will contain `flex-shrink-0 w-80 md:w-[280px]`
+    <div className={`mb-2.5 lg:mb-0 ${className}`}>
+    {/* END CHANGES HERE */}
       <div className="mb-4 flex items-center justify-between">
-        {/* Apply headingColor using inline style for exact color matching */}
-        <h3 className={`font-semibold text-lg uppercase tracking-wider`} style={{ color: headingColor }}>
+        {/* START CHANGES HERE */}
+        {/* Added `min-w-0` and `break-words` for better text handling on small screens */}
+        <h3 className={`font-semibold text-lg uppercase tracking-wider min-w-0 break-words`} style={{ color: headingColor }}>
           {title}
         </h3>
-        {/* FIX: Changed text-white to text-neutral-800 dark:text-white for better visibility in both modes */}
-        <span className="text-sm text-neutral-800 dark:text-white font-mono px-2 py-0.5 rounded-full bg-neutral-700/50">
+        <span className="text-sm text-neutral-800 dark:text-white font-mono px-2 py-0.5 rounded-full bg-neutral-700/50 flex-shrink-0 ml-2"> {/* Added flex-shrink-0 ml-2 */}
           {filteredCards?.length}
         </span>
+        {/* END CHANGES HERE */}
       </div>
 
       <div
@@ -119,6 +131,7 @@ export const Column = ({ title, headingColor, cards, column, setCards }: TColumn
         className={`
           h-full w-full rounded-lg p-3.5 flex flex-col gap-3.5 transition-all duration-300
           ${active ? "bg-gradient-to-br from-neutral-800 to-neutral-900 border-2 border-violet-500 shadow-xl" : "bg-neutral-800/60 border border-neutral-700"}
+          overflow-y-auto {/* Added for vertical scroll within column if cards exceed height */}
         `}
       >
         <AnimatePresence>
